@@ -119,7 +119,7 @@ function parseLogFile(content) {
         createAllLogLines();
         sortAllLogLines();
         drawLines();
-        drawChart();
+        // drawChart();
         bindDisplayFilters();
     }
 
@@ -162,7 +162,7 @@ function bindDisplayFilters () {
     $("#filter-text").on('input',debounce( function(e) {
         console.log("debounced filter");
         reParseData()
-    }, 250));
+    }, 250));w
     $("#format-text").on('input',debounce( function(e) {
         console.log("debounced format");
         reParseData()
