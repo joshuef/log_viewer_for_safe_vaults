@@ -92,6 +92,10 @@ function parseLogFile(content, fileIndex, totalFiles) {
     let nodeSocket = "";
 
     let filterText = $("#filter-text").val();
+    let logsSince = $("#logs-since").val();
+    
+    let limit_logs = logsSince != "";
+    
     let networkEventFilter = new RegExp(".*");
     if (filterText != "") {
         try {
@@ -102,27 +106,27 @@ function parseLogFile(content, fileIndex, totalFiles) {
             return;
         }
     }
-
+    
     // parse lines
     for (let lineIndex=0; lineIndex<lines.length; lineIndex++) {
         let line = lines[lineIndex];
         let split = line.split(" ");
         let date = line.split(" ")[2];
         let logLevel = split[1];
-
+        
         if (line.includes("Node connection info:") ){
             nodeSocket = split[split.length - 1 ].replaceAll('"', '');
         }
-
+        
         let srcLine = split[3];
-
+        
         // remove first parts of text
         split.shift();
         split.shift();
         split.shift();
         split.shift();
         let actual_text = split.join(" ");
-
+        
         let time = Math.floor(new Date(date).getTime() / 1000);
         if (isNaN(time)) {
             continue
@@ -133,12 +137,30 @@ function parseLogFile(content, fileIndex, totalFiles) {
         let displayedLineIndex = nodeChartLine.data.length;
         let subseconds = date.split(".")[1].split(/[+-]/)[0];
         time = time + parseFloat("0." + subseconds);
-
+        
         let showLine = true;
         if (filterText != "" && !line.match(networkEventFilter)){
             showLine = false;
         }
+    
+        if (limit_logs) {
+            let limit = new Date(); 
 
+            let [hours, minutes, seconds] = logsSince.split(':'); // Using ES6 destructuring
+
+            // Set the hours, using implicit type coercion
+            limit.setHours(+hours); 
+            // You can pass Number or String. It doesn't really matter
+            limit.setMinutes(minutes); 
+            limit.setSeconds(seconds);
+
+            let theLimit = Math.floor(new Date(limit).getTime() / 1000);
+
+            if ( time < theLimit ) {
+                showLine = false
+            }
+        }
+        
         // chart point
         if (showLine) {
             nodeChartLine.data.push({
@@ -201,6 +223,10 @@ function bindDisplayFilters () {
     $("#invert-logs").change(reParseData);
 
     $("#filter-text").on('input',debounce( function(e) {
+        console.log("debounced filter");
+        reParseData()
+    }, 250));
+    $("#logs-since").on('input',debounce( function(e) {
         console.log("debounced filter");
         reParseData()
     }, 250));
