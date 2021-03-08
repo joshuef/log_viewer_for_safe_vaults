@@ -87,14 +87,10 @@ function displayEverything() {
                     sortAllLogLines();
                     $(".duration").text("Rendering display... rendering visual elements");
                     setTimeout(function() {
-                        if( nodeChartLines[0] === undefined || nodeChartLines[0].data[0] === undefined )
-                        {
-                            linesEl.html("<h2>No logs to display :(</h2>")
-                        }
-                        else {
-                            drawLines();
-                            drawChart();
-                        }
+      
+                        drawLines();
+                        drawChart();
+                          
                         bindDisplayFilters();
                     }, 50);
                 }, 50);
@@ -324,7 +320,15 @@ function drawLines() {
         // to be scrolled to that line.
         let nodeIndex = line.nodeIndex;
         let lineIndex = line.lineIndex;
-        nodeChartLines[nodeIndex].data[lineIndex].allLogLinesIndex = i;
+        if ( nodeChartLines[nodeIndex].data[lineIndex] !== undefined )
+        {
+
+            nodeChartLines[nodeIndex].data[lineIndex].allLogLinesIndex = i;
+        }
+        else{ 
+            console.log("THIS ONE broken us ", nodeChartLines[nodeIndex].data);
+            console.log("index was", lineIndex);
+        }
         // Display line
         let el = $($("#line-template").html());
 

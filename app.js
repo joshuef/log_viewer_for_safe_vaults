@@ -322,17 +322,22 @@ window.drawChart = function() {
 
     function keyboardShortcut(e) {
         console.log(e.charCode);
-        if (e.charCode == 61) { // equals
-            doZoom(true);
-        }
-        else if (e.charCode == 45) { // hyphen
-            doZoom(false);
-        }
-        else if (e.charCode == 91) { // open square bracket
-            doPanLeft();
-        }
-        else if (e.charCode == 93) { // close square bracket
-            doPanRight();
+        try {
+
+            if (e.charCode == 61) { // equals
+                doZoom(true);
+            }
+            else if (e.charCode == 45) { // hyphen
+                doZoom(false);
+            }
+            else if (e.charCode == 91) { // open square bracket
+                doPanLeft();
+            }
+            else if (e.charCode == 93) { // close square bracket
+                doPanRight();
+            }
+        }catch (e) {
+            console.log("There was an error with a keypress shortcut: ", e);
         }
     }
 
