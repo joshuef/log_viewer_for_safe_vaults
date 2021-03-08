@@ -198,6 +198,8 @@ function bindDisplayFilters () {
 
     };
 
+    $("#invert-logs").change(reParseData);
+
     $("#filter-text").on('input',debounce( function(e) {
         console.log("debounced filter");
         reParseData()
@@ -237,7 +239,11 @@ function createAllLogLines() {
 
 function sortnodeOrder() {
     nodeChartLines.sort(function(a,b) {
-        return a.firstTime - b.firstTime;
+        let invert = $("#invert-logs").is(':checked');
+
+        return invert ? b.firstTime - a.firstTime : a.firstTime - b.firstTime;
+
+        
     });
     // update node lines with their new index
     for (let nodeIndex=0; nodeIndex<nodeChartLines.length; nodeIndex++) {
@@ -251,7 +257,10 @@ function sortnodeOrder() {
 
 function sortAllLogLines() {
     allLogLines.sort(function(a,b) {
-        return a.time - b.time;
+        let invert = $("#invert-logs").is(':checked');
+
+        return invert ? b.firstTime - a.firstTime : a.firstTime - b.firstTime;
+
     });
 }
 
