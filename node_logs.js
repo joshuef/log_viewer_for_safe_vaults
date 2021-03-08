@@ -87,8 +87,14 @@ function displayEverything() {
                     sortAllLogLines();
                     $(".duration").text("Rendering display... rendering visual elements");
                     setTimeout(function() {
-                        drawLines();
-                        drawChart();
+                        if( nodeChartLines[0] === undefined || nodeChartLines[0].data[0] === undefined )
+                        {
+                            linesEl.html("<h2>No logs to display :(</h2>")
+                        }
+                        else {
+                            drawLines();
+                            drawChart();
+                        }
                         bindDisplayFilters();
                     }, 50);
                 }, 50);
