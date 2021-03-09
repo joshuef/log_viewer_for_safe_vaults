@@ -176,7 +176,7 @@ function parseLogFile(content, fileIndex, totalFiles) {
 
             let theLimit = Math.floor(new Date(limit).getTime() / 1000);
 
-            if ( time < theLimit ) {
+            if ( time < theLimit && showLine ) {
                 showLine = false
             }
         }
