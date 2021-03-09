@@ -305,7 +305,7 @@ function sortAllLogLines() {
     allLogLines.sort(function(a,b) {
         let invert = $("#invert-logs").is(':checked');
 
-        return invert ? b.firstTime - a.firstTime : a.firstTime - b.firstTime;
+        return invert ? b.time - a.time : a.time - b.time;
 
     });
 }
